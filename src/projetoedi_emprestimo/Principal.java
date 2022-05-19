@@ -19,8 +19,9 @@ public class Principal {
        
         Scanner ler = new Scanner(System.in);
         int op, ano, codigo;
-        String nome, autor;
+        String nome, autor, cpf;
         Livro l1;
+        Node n1;
         Arvore a1 = new Arvore();
         
         do{
@@ -52,14 +53,28 @@ public class Principal {
                        System.out.println("Ano de publicação:");
                        ano = ler.nextInt();
                        l1 = new Livro(nome, autor, codigo, ano, true);
+                       n1 = new Node(l1);
                        if(a1.getRaiz()==null){
-                           a1.setRaiz(l1);
+                           a1.setRaiz(n1);
                            System.out.println("Livro inserido na raiz.");
                        }else{
-                           a1.inserirNo(l1, a1.getRaiz());
+                           a1.inserirNo(n1, a1.getRaiz());
                        }
                        break;
-                case 2:
+                case 2:System.out.println("Informe o nome do livro:");
+                       nome = ler.nextLine();
+                       n1 = a1.buscar(nome, a1.getRaiz());
+                       if(n1.getLivro().isDisponivel()){
+                            n1.getLivro().setDisponivel(false);
+                            System.out.println("Informe o nome da pessoa que deseja realizar o empréstimo:");
+                            nome = ler.nextLine();
+                            System.out.println("Informe o CPF da pessoa que deseja realizar o empréstimo:");
+                            cpf = ler.nextLine();
+                            Pessoa p1 = new Pessoa(nome, cpf);
+                            n1.getLivro().setEmprestado(p1);
+                       }else{
+                           System.out.println("Livro não disponível.");
+                       }
                        break;
                 case 3: 
                        break;

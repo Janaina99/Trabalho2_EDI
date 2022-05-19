@@ -6,23 +6,23 @@ package projetoedi_emprestimo;
  * @author Janaina
  */
 public class Arvore {
-    private Livro raiz;
+    private Node raiz;
 
     public Arvore() {
         this.raiz = null;
     }
 
-    public Livro getRaiz() {
+    public Node getRaiz() {
         return raiz;
     }
 
-    public void setRaiz(Livro raiz) {
+    public void setRaiz(Node raiz) {
         this.raiz = raiz;
     }
     
-    public void inserirNo(Livro livro, Livro root){
+    public void inserirNo(Node livro, Node root){
             //Livro que estou recebendo é menor que o que está lá
-            if(livro.getNome().compareToIgnoreCase(root.getNome()) > 0){
+            if(livro.getLivro().getNome().compareToIgnoreCase(root.getLivro().getNome()) > 0){
                 //Verifica se já tem filho na direita
                 if(root.getFilhoD() != null){
                     inserirNo(livro, root.getFilhoD());
@@ -33,7 +33,7 @@ public class Arvore {
                 }
             }else{
                 //Livro que estou recebendo é maior que o que está lá
-                if(livro.getNome().compareToIgnoreCase(root.getNome()) < 0){
+                if(livro.getLivro().getNome().compareToIgnoreCase(root.getLivro().getNome()) < 0){
                     //Verifica se já tem filho na esquerda
                     if(root.getFilhoE() != null){
                         inserirNo(livro, root.getFilhoE());
@@ -47,23 +47,24 @@ public class Arvore {
             }
     }
     
-    public void exibirLivros(Livro root){
+    public void exibirLivros(Node root){
         if(root != null){
             exibirLivros(root.getFilhoE());
-            System.out.println(root.getNome());
+            System.out.println(root.getLivro().getNome());
             exibirLivros(root.getFilhoD());
         }
     }
     
-    public void buscar(String nome, Livro root){
+    public Node buscar(String nome, Node root){
         if(root == null){
             System.out.println("Livro não encontrado.");
         }
         else{
-            while(!nome.equalsIgnoreCase(root.getNome())){
-                
+            while(!nome.equalsIgnoreCase(root.getLivro().getNome())){
+                //falta terminar
             }
         }
+        return root;
         
     }
     

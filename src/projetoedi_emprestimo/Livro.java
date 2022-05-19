@@ -10,9 +10,8 @@ public class Livro {
     private String autor;
     private int codigo;
     private int Ano;
-    private boolean disponivel;    
-    private Livro filhoD;
-    private Livro filhoE;
+    private boolean disponivel; 
+    private Pessoa emprestado;
     
     public Livro(String nome, String autor, int codigo, int Ano, boolean disponivel) {
         this.nome = nome;
@@ -20,24 +19,7 @@ public class Livro {
         this.codigo = codigo;
         this.Ano = Ano;
         this.disponivel = disponivel;
-        this.filhoD = null;
-        this.filhoE = null;
-    }
-
-    public Livro getFilhoD() {
-        return filhoD;
-    }
-
-    public void setFilhoD(Livro filhoD) {
-        this.filhoD = filhoD;
-    }
-
-    public Livro getFilhoE() {
-        return filhoE;
-    }
-
-    public void setFilhoE(Livro filhoE) {
-        this.filhoE = filhoE;
+        this.emprestado = null;
     }
 
     public String getNome() {
@@ -79,7 +61,14 @@ public class Livro {
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
     }
-    
+
+    public Pessoa getEmprestado() {
+        return emprestado;
+    }
+
+    public void setEmprestado(Pessoa emprestado) {
+        this.emprestado = emprestado;
+    }
     
     
 }
