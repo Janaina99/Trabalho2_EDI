@@ -35,6 +35,9 @@ public class Principal {
             System.out.println(" 3 - Reallizar devolução");
             System.out.println(" 4 - Listar livros");
             System.out.println(" 5 - Buscar livro");
+            System.out.println(" 6 - Remover livro");
+            System.out.println(" 7 - Listar livros disponíveis");
+            System.out.println(" 8 - Listar livros emprestados");
             System.out.println("===============================");
             System.out.println("Digite sua opção:");
             op = ler.nextInt();
@@ -61,26 +64,64 @@ public class Principal {
                            a1.inserirNo(n1, a1.getRaiz());
                        }
                        break;
-                case 2:System.out.println("Informe o nome do livro:");
+                case 2:ler.nextLine();
+                       System.out.println("Informe o nome do livro:");
                        nome = ler.nextLine();
                        n1 = a1.buscar(nome, a1.getRaiz());
-                       if(n1.getLivro().isDisponivel()){
-                            n1.getLivro().setDisponivel(false);
-                            System.out.println("Informe o nome da pessoa que deseja realizar o empréstimo:");
-                            nome = ler.nextLine();
-                            System.out.println("Informe o CPF da pessoa que deseja realizar o empréstimo:");
-                            cpf = ler.nextLine();
-                            Pessoa p1 = new Pessoa(nome, cpf);
-                            n1.getLivro().setEmprestado(p1);
+                       if(n1 != null){
+                            if(n1.getLivro().isDisponivel()){
+                                 n1.getLivro().setDisponivel(false);
+                                 System.out.println("Informe o nome da pessoa que deseja realizar o empréstimo:");
+                                 nome = ler.nextLine();
+                                 System.out.println("Informe o CPF da pessoa que deseja realizar o empréstimo:");
+                                 cpf = ler.nextLine();
+                                 Pessoa p1 = new Pessoa(nome, cpf);
+                                 n1.getLivro().setEmprestado(p1);
+                                 System.out.println("Empréstimo realizado:"+n1.getLivro().getNome());
+                            }else{
+                                System.out.println("Livro não disponível.");
+                            }
                        }else{
-                           System.out.println("Livro não disponível.");
+                            System.out.println("Livro não disponível.");
                        }
                        break;
-                case 3: 
+                case 3:System.out.println("Informe o livro que deseja devolver:");
+                       ler.nextLine();
+                       nome = ler.nextLine();
+                       n1 = a1.buscar(nome, a1.getRaiz());
+                       if(n1!=null){
+                           System.out.println("Livro emprestado a:" + n1.getLivro().getEmprestado().getNome()); 
+                           n1.getLivro().setDisponivel(true);
+                           System.out.println("Livro devolvido com sucesso.");
+                       }else{
+                           System.out.println("Livro não encontrado.");
+                       }
                        break;
                 case 4:a1.exibirLivros(a1.getRaiz());
                        break;
-                case 5: 
+                case 5:ler.nextLine();
+                       System.out.println("Informe o nome do livro:");
+                       nome = ler.nextLine();
+                       n1 = a1.buscar(nome, a1.getRaiz());
+                       if(n1!=null){
+                           System.out.println("Livro encontrado:"+n1.getLivro().getNome());
+                       }else{
+                           System.out.println("Livro não encontrado");
+                       }
+                       break;
+                case 6:System.out.println("Informe o nome do livro a ser removido:");
+                       ler.nextLine();
+                       nome = ler.nextLine();
+                       n1 = a1.remover(a1.getRaiz(), nome);
+                       if(n1==null){
+                           System.out.println("Livro removido");
+                       }
+                       break;
+                case 7:System.out.println("===========Livros disponíveis=============");
+                       a1.exibirLivrosDispo(a1.getRaiz());
+                       break;
+                case 8:System.out.println("===========Livros indisponíveis=============");
+                       a1.exibirLivrosIndispo(a1.getRaiz());
                        break;
                 default:System.out.println("Opção inválida. Tente novamente!");
                         break;

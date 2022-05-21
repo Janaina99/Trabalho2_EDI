@@ -21,7 +21,7 @@ public class Arvore {
     }
     
     public void inserirNo(Node livro, Node root){
-            //Livro que estou recebendo é menor que o que está lá
+            //Livro que estou recebendo é maior que o que está lá
             if(livro.getLivro().getNome().compareToIgnoreCase(root.getLivro().getNome()) > 0){
                 //Verifica se já tem filho na direita
                 if(root.getFilhoD() != null){
@@ -32,7 +32,7 @@ public class Arvore {
                     System.out.println("Livro inserido no filho direito.");
                 }
             }else{
-                //Livro que estou recebendo é maior que o que está lá
+                //Livro que estou recebendo é menor que o que está lá
                 if(livro.getLivro().getNome().compareToIgnoreCase(root.getLivro().getNome()) < 0){
                     //Verifica se já tem filho na esquerda
                     if(root.getFilhoE() != null){
@@ -50,22 +50,91 @@ public class Arvore {
     public void exibirLivros(Node root){
         if(root != null){
             exibirLivros(root.getFilhoE());
-            System.out.println(root.getLivro().getNome());
+            System.out.println(root.getLivro().getNome() + " Disponível:" + root.getLivro().isDisponivel());
+            exibirLivros(root.getFilhoD());
+        }
+    }
+    
+     public void exibirLivrosDispo(Node root){
+        if(root != null){
+            if(root.getLivro().isDisponivel()){
+                System.out.println(root.getLivro().getNome());
+            }
+            exibirLivros(root.getFilhoE());
+            exibirLivros(root.getFilhoD());
+        }
+    }
+     
+     public void exibirLivrosIndispo(Node root){
+        if(root != null){
+            if(!(root.getLivro().isDisponivel())){
+                System.out.println(root.getLivro().getNome());
+            }
+            exibirLivros(root.getFilhoE());
             exibirLivros(root.getFilhoD());
         }
     }
     
     public Node buscar(String nome, Node root){
-        if(root == null){
-            System.out.println("Livro não encontrado.");
-        }
-        else{
-            while(!nome.equalsIgnoreCase(root.getLivro().getNome())){
-                //falta terminar
+        if(root != null){
+            if(nome.equalsIgnoreCase(root.getLivro().getNome())){
+                return root;
+            }else{
+                if(nome.compareToIgnoreCase(root.getLivro().getNome()) < 0){
+                    return buscar(nome, root.getFilhoE());
+                }else{
+                    return buscar(nome, root.getFilhoD());
+                }
             }
         }
-        return root;
-        
+        System.out.println("Livro não encontrado.");
+        return null;      
     }
     
+    
+    public Node remover(Node root, String nome){
+        if(root!=null){
+            if(root.getLivro().getNome().equalsIgnoreCase(nome)){
+                //Remove no folha
+                if(root.getFilhoD()==null && root.getFilhoE()==null){
+                    return null;                   
+                    
+                }else{
+                    //No com os dois filhos
+                    if(root.getFilhoD()!=null && root.getFilhoE()!=null){
+                        Node aux = root.getFilhoE();
+                        while(aux.getFilhoD()!=null){
+                            aux = aux.getFilhoD();
+                        }
+                        Livro copia = aux.getLivro();
+                        aux.setLivro(root.getLivro());
+                        root.setLivro(copia);
+                        System.out.println("Elemento trocado");
+                        root.setFilhoE(remover(root.getFilhoE(), nome));
+                        return root;
+                    }else{
+                        //No com apenas um filho
+                        Node aux;
+                        if(root.getFilhoE()!=null){
+                            aux = root.getFilhoE();                                 
+                        }else{
+                            aux = root.getFilhoD();
+                        }
+                        root = null;
+                        return aux;
+                    }
+                }
+            }else{
+                if(nome.compareToIgnoreCase(root.getLivro().getNome()) < 0){
+                    root.setFilhoE(remover(root.getFilhoE(), nome));
+                }else{
+                    root.setFilhoD(remover(root.getFilhoD(), nome));
+                }
+                return root;
+            }
+        }else{
+           System.out.println("Livro não encontrado.");
+        }
+        return null;
+    }
 }
