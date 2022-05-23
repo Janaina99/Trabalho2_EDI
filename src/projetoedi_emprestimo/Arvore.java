@@ -29,7 +29,7 @@ public class Arvore {
                 }else{
                     //Não tem filho da direita
                     root.setFilhoD(livro);
-                    System.out.println("Livro inserido no filho direito.");
+                    System.out.println("Livro cadastrado.");
                 }
             }else{
                 //Livro que estou recebendo é menor que o que está lá
@@ -39,47 +39,51 @@ public class Arvore {
                         inserirNo(livro, root.getFilhoE());
                     }else{
                         root.setFilhoE(livro);
-                        System.out.println("Livro inserido no filho esquerdo.");
+                        System.out.println("Livro cadastrado.");
                     }
                 }else{
-                    System.out.println("Livro não pode ser inserido, pois já está cadastrado!");
+                    System.out.println("Livro não pode ser cadastrado, pois já está cadastrado!");
                 }
             }
     }
-    
+    //Nesta função usamos o caminhamento in-ordem, assim são exibidos os nomes dos livros em ordem alfabetica
     public void exibirLivros(Node root){
         if(root != null){
             exibirLivros(root.getFilhoE());
-            System.out.println(root.getLivro().getNome() + " Disponível:" + root.getLivro().isDisponivel());
+            System.out.println("Nome:"+root.getLivro().getNome() + "   Autor:" + root.getLivro().getAutor() + "  Ano:" + root.getLivro().getAno());
             exibirLivros(root.getFilhoD());
         }
     }
     
      public void exibirLivrosDispo(Node root){
-        if(root != null){
+        if(root != null){            
+            exibirLivrosDispo(root.getFilhoE());
             if(root.getLivro().isDisponivel()){
-                System.out.println(root.getLivro().getNome());
+                System.out.println("Nome:"+root.getLivro().getNome() + "   Autor:" + root.getLivro().getAutor() + "  Ano:" + root.getLivro().getAno());
             }
-            exibirLivros(root.getFilhoE());
-            exibirLivros(root.getFilhoD());
+            exibirLivrosDispo(root.getFilhoD());
         }
     }
      
      public void exibirLivrosIndispo(Node root){
-        if(root != null){
-            if(!(root.getLivro().isDisponivel())){
-                System.out.println(root.getLivro().getNome());
+        if(root != null){            
+            exibirLivrosIndispo(root.getFilhoE());
+            if(!root.getLivro().isDisponivel()){
+                System.out.println("Nome:"+root.getLivro().getNome() + "   Autor:" + root.getLivro().getAutor() + "  Ano:" + root.getLivro().getAno());
+                System.out.println("Emprestado para:" + root.getLivro().getEmprestado().getNome());
             }
-            exibirLivros(root.getFilhoE());
-            exibirLivros(root.getFilhoD());
+            exibirLivrosIndispo(root.getFilhoD());
         }
     }
-    
+    //Função que busca o no com livro de mesmo nome que é recebido
     public Node buscar(String nome, Node root){
         if(root != null){
+            //Verifica se é igual, se for retorna o no
             if(nome.equalsIgnoreCase(root.getLivro().getNome())){
                 return root;
             }else{
+                //Se o nome não for igual verifica se vem antes ou depois
+                //Chama a função novamento passando o filho da esquerda ou direita
                 if(nome.compareToIgnoreCase(root.getLivro().getNome()) < 0){
                     return buscar(nome, root.getFilhoE());
                 }else{
@@ -94,26 +98,31 @@ public class Arvore {
     
     public Node remover(Node root, String nome){
         if(root!=null){
+            //Verifica se o no é igual ao que estamos buscando
             if(root.getLivro().getNome().equalsIgnoreCase(nome)){
-                //Remove no folha
+                //Se for igual, testa se é um nó folha e o remove
                 if(root.getFilhoD()==null && root.getFilhoE()==null){
                     return null;                   
                     
                 }else{
                     //No com os dois filhos
+                    //A partir da subarvore esquerda, percorre pelos filhos direitos até o último
                     if(root.getFilhoD()!=null && root.getFilhoE()!=null){
                         Node aux = root.getFilhoE();
                         while(aux.getFilhoD()!=null){
                             aux = aux.getFilhoD();
                         }
+                        //Troca as informações do último nó, com o nó que queremos remover
                         Livro copia = aux.getLivro();
                         aux.setLivro(root.getLivro());
                         root.setLivro(copia);
                         System.out.println("Elemento trocado");
+                        //Chama a função novamente passando a raiz da subárvore esquerda, buscando o nó que agora é folha
                         root.setFilhoE(remover(root.getFilhoE(), nome));
                         return root;
                     }else{
                         //No com apenas um filho
+                        //O nó auxiliar recebe o nó filho, libera o nó que quer excluir e retorna para o lugar dele o auxiliar
                         Node aux;
                         if(root.getFilhoE()!=null){
                             aux = root.getFilhoE();                                 
@@ -125,6 +134,7 @@ public class Arvore {
                     }
                 }
             }else{
+                //Se o nome não for igual, verifica se vai percorrer a subarvore direita ou esquerda
                 if(nome.compareToIgnoreCase(root.getLivro().getNome()) < 0){
                     root.setFilhoE(remover(root.getFilhoE(), nome));
                 }else{

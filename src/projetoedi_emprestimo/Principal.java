@@ -55,12 +55,15 @@ public class Principal {
                        codigo = ler.nextInt();
                        System.out.println("Ano de publicação:");
                        ano = ler.nextInt();
+                       //Instanciando o objeto do tipo Livro e do tipo Node
                        l1 = new Livro(nome, autor, codigo, ano, true);
                        n1 = new Node(l1);
+                       //Verifica se a raiz da árvore está nula para ja inserir o nó
                        if(a1.getRaiz()==null){
                            a1.setRaiz(n1);
-                           System.out.println("Livro inserido na raiz.");
+                           System.out.println("Livro cadastrado.");
                        }else{
+                           //Se a raiz não for nula chama a função que insere na posição correta
                            a1.inserirNo(n1, a1.getRaiz());
                        }
                        break;
@@ -92,12 +95,14 @@ public class Principal {
                        if(n1!=null){
                            System.out.println("Livro emprestado a:" + n1.getLivro().getEmprestado().getNome()); 
                            n1.getLivro().setDisponivel(true);
+                           n1.getLivro().setEmprestado(null);
                            System.out.println("Livro devolvido com sucesso.");
                        }else{
                            System.out.println("Livro não encontrado.");
                        }
                        break;
-                case 4:a1.exibirLivros(a1.getRaiz());
+                case 4:System.out.println("====================Livros cadastrados======================");  
+                       a1.exibirLivros(a1.getRaiz());
                        break;
                 case 5:ler.nextLine();
                        System.out.println("Informe o nome do livro:");
@@ -117,10 +122,10 @@ public class Principal {
                            System.out.println("Livro removido");
                        }
                        break;
-                case 7:System.out.println("===========Livros disponíveis=============");
+                case 7:System.out.println("===========================Livros disponíveis============================");
                        a1.exibirLivrosDispo(a1.getRaiz());
                        break;
-                case 8:System.out.println("===========Livros indisponíveis=============");
+                case 8:System.out.println("==========================Livros indisponíveis==========================");  
                        a1.exibirLivrosIndispo(a1.getRaiz());
                        break;
                 default:System.out.println("Opção inválida. Tente novamente!");
